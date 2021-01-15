@@ -19,28 +19,64 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/url_label" />
+                android:text="@string/url_label"
+                android:layout_margin="10dp" />
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/url" />
+                android:id="@+id/url"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp" />
         </LinearLayout>
 
-        <Button
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="6dp"
-            android:text="@string/url_btn"
-            android:onClick="goToInternet" />
+            android:orientation="horizontal" >
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:text="@string/rating_btn"
+                android:onClick="displayWebsiteRating" />
 
-        <RatingBar
-            android:id="@+id/ratingBar"
-            android:layout_width="wrap_content"
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:text="@string/url_btn"
+                android:onClick="goToInternet" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/display_rating_section"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:numStars="5" />
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:background="@drawable/rounded_edge"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/display_rating_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="You rated this website : "
+                android:layout_margin="6dp"
+                android:textSize="16sp"/>
+
+            <RatingBar
+                android:id="@+id/ratingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:numStars="5" />
+        </LinearLayout>
+
 
         <Button
             android:layout_width="match_parent"
@@ -49,12 +85,6 @@
             android:text="@string/save_btn"
             android:onClick="addWebsite" />
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="6dp"
-            android:text="@string/rating_btn"
-            android:onClick="printWebsiteRating" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

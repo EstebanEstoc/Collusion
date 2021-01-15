@@ -42,4 +42,8 @@ public class WebsitesDatabase {
         cursor.close();
         return rating;
     }
+
+    public void updateRatingByUrl(String url) {
+        // TODO
+    }
 }

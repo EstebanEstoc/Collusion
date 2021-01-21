@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Collusion Web</string>
     <string name="url_label">URL :</string>
+    <string name="rating_btn">Check rating</string>
     <string name="url_btn">Go to this url</string>
     <string name="save_btn">Save website</string>
-    <string name="rating_btn">Check rating</string>
+    <string name="update_btn">Update rating of website</string>
 </resources>

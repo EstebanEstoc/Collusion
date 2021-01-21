@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -15,35 +16,71 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
     ListView contactListView;
     ArrayList<Contact> contacts;
     ArrayList<PhoneNumber> numbers;
-    String [] appPermissions = {
+    String[] appPermissions = {
             Manifest.permission.READ_CONTACTS,
             Manifest.permission.READ_PHONE_STATE
     };
     ContactAdapter contactAdapter;
+    EditText inputSearch;
+    SharedPreferences collusionSharedPref;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        collusionSharedPref = getSharedPreferences("collusion", MODE_PRIVATE);
         contactListView = findViewById(R.id.contactlstview);
         contacts = new ArrayList<Contact>();
         contactAdapter = new ContactAdapter(this, contacts);
         contactListView.setAdapter(contactAdapter);
-        if (checkAndRequestPermissions()){
+        if (checkAndRequestPermissions()) {
             getContacts();
         }
+
+        Map<String, ?> allEntries = collusionSharedPref.getAll();
+        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+            System.out.println("map values" + entry.getKey() + ": " + entry.getValue().toString());
+        }
+
+        inputSearch = (EditText) findViewById(R.id.search_box);
+
+        inputSearch.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                // When user changed the Text
+                contactAdapter.getFilter().filter(cs);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                          int arg3) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                // TODO Auto-generated method stub
+            }
+        });
     }
 
     @Override
@@ -54,17 +91,23 @@ public class MainActivity extends AppCompatActivity {
 
     private void getContacts() {
         ContentResolver contentResolver = getContentResolver();
+        SharedPreferences.Editor editor = collusionSharedPref.edit();
         Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
                 String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
                 ArrayList<PhoneNumber> numbers = getPhones(contactId);
+                Contact tmpContact = new Contact(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)), uriToBitmap(this, cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_URI))), numbers);
+                for (PhoneNumber number : numbers){
+                    editor.putString(tmpContact.getName() + number.getTypeString(), number.getNumber());
+                }
                 contacts.add(new Contact(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)), uriToBitmap(this, cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_URI))), numbers));
+
             } while (cursor.moveToNext());
             contactAdapter.notifyDataSetChanged();
         }
+        editor.apply();
         cursor.close();
-
     }
 
     private ArrayList<PhoneNumber> getPhones(String contactId) {
@@ -94,15 +137,15 @@ public class MainActivity extends AppCompatActivity {
         return bitmap;
     }
 
-    public boolean checkAndRequestPermissions(){
+    public boolean checkAndRequestPermissions() {
         List<String> listPermissionNeeded = new ArrayList<>();
-        for (String perm : appPermissions){
-            if (ContextCompat.checkSelfPermission(this,perm) != PackageManager.PERMISSION_GRANTED) {
+        for (String perm : appPermissions) {
+            if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
                 listPermissionNeeded.add(perm);
             }
         }
         if (!listPermissionNeeded.isEmpty()) {
-            ActivityCompat.requestPermissions(this,listPermissionNeeded.toArray(new String[listPermissionNeeded.size()]), PERMISSIONS_REQUEST_CODE);
+            ActivityCompat.requestPermissions(this, listPermissionNeeded.toArray(new String[listPermissionNeeded.size()]), PERMISSIONS_REQUEST_CODE);
             return false;
         }
         return true;

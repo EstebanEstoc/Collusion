@@ -7,11 +7,35 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/contacts"
+        android:textColor="#353b48"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/search_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/type_to_search_contacts"
+        android:inputType="text"
+        android:maxLines="1"
+        android:textColor="@color/white"
+        android:textColorHint="#bdc3c7"
+        android:paddingTop="5dp"
+        android:layout_marginHorizontal="8dp"
+        android:paddingBottom="5dp"
+        android:background="@drawable/rounded_edittext"
+        android:autofillHints=""
+        android:layout_marginBottom="10dp"
+        android:paddingLeft="20dp" />
+
     <ListView
         android:id="@+id/contactlstview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="@color/transperent_color"
-        />
+        android:divider="@color/transperent_color" />
 
 </LinearLayout>

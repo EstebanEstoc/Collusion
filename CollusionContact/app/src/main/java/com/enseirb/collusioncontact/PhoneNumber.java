@@ -20,8 +20,8 @@ public class PhoneNumber {
         return number;
     }
 
-    public String getTypeString (){
-        switch (type){
+    public String getTypeString() {
+        switch (type) {
             case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
                 return "Home :";
             case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:

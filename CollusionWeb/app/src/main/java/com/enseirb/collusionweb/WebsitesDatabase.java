@@ -43,7 +43,7 @@ public class WebsitesDatabase {
         return rating;
     }
 
-    public void updateRatingByUrl(String url) {
-        // TODO
+    public void updateRatingByUrl(String url, float rating) {
+        db.execSQL("UPDATE websites SET rating=? WHERE url LIKE ?;", new String[] {String.valueOf(rating), url});
     }
 }

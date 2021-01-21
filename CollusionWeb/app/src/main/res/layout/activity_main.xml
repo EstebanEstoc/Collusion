@@ -9,46 +9,48 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/url_label"
-                android:layout_margin="10dp" />
+                android:layout_margin="10dp"
+                android:text="@string/url_label" />
 
             <EditText
+                android:id="@+id/url"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/url"
                 android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginEnd="10dp" />
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/btns_section"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="6dp"
-                android:text="@string/rating_btn"
-                android:onClick="displayWebsiteRating" />
+                android:onClick="displayWebsiteExistingRating"
+                android:text="@string/rating_btn" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="6dp"
-                android:text="@string/url_btn"
-                android:onClick="goToInternet" />
+                android:onClick="goToInternet"
+                android:text="@string/url_btn" />
         </LinearLayout>
 
         <LinearLayout
@@ -59,15 +61,31 @@
             android:layout_margin="10dp"
             android:background="@drawable/rounded_edge"
             android:orientation="vertical"
-            android:visibility="gone">
+            android:visibility="invisible">
 
             <TextView
                 android:id="@+id/display_rating_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="You rated this website : "
                 android:layout_margin="6dp"
-                android:textSize="16sp"/>
+                android:text="You rated this website : "
+                android:textSize="16sp" />
+
+            <RatingBar
+                android:id="@+id/ratingDisplayBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:numStars="5" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/rating_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="vertical"
+            android:visibility="invisible">
 
             <RatingBar
                 android:id="@+id/ratingBar"
@@ -75,16 +93,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:numStars="5" />
+
+            <Button
+                android:id="@+id/save_update_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:onClick="updateOrSaveWebsite"
+                android:text="@string/save_btn" />
         </LinearLayout>
-
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="6dp"
-            android:text="@string/save_btn"
-            android:onClick="addWebsite" />
-
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

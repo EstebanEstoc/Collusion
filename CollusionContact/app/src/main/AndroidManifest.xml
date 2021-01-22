@@ -28,7 +28,7 @@
             android:enabled="true"
             android:exported="true"
             android:multiprocess="true"
-            android:readPermission="com.enseirb.collusioncontact.PERMISSION.READ" />
+            android:permission="com.enseirb.collusioncontact.PERMISSION.READ" />
     </application>
 
 </manifest>

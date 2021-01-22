@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -15,6 +16,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -39,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     };
     ContactAdapter contactAdapter;
     EditText inputSearch;
-    SharedPreferences collusionSharedPref;
     private static final int PERMISSIONS_REQUEST_CODE = 100;
 
     @SuppressLint("WorldReadableFiles")
@@ -47,18 +48,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        collusionSharedPref = getSharedPreferences("collusion", MODE_PRIVATE);
         contactListView = findViewById(R.id.contactlstview);
         contacts = new ArrayList<Contact>();
         contactAdapter = new ContactAdapter(this, contacts);
         contactListView.setAdapter(contactAdapter);
         if (checkAndRequestPermissions()) {
             getContacts();
-        }
-
-        Map<String, ?> allEntries = collusionSharedPref.getAll();
-        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            System.out.println("map values" + entry.getKey() + ": " + entry.getValue().toString());
         }
 
         inputSearch = (EditText) findViewById(R.id.search_box);
@@ -93,22 +88,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void getContacts() {
         ContentResolver contentResolver = getContentResolver();
-        SharedPreferences.Editor editor = collusionSharedPref.edit();
         Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
         if (cursor.moveToFirst()) {
             do {
                 String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
                 ArrayList<PhoneNumber> numbers = getPhones(contactId);
-                Contact tmpContact = new Contact(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)), uriToBitmap(this, cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_URI))), numbers);
-                for (PhoneNumber number : numbers){
-                    editor.putString(tmpContact.getName() + number.getTypeString(), number.getNumber());
-                }
-                contacts.add(new Contact(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)), uriToBitmap(this, cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_URI))), numbers));
 
+                contacts.add(new Contact(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)), uriToBitmap(this, cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_URI))), numbers));
             } while (cursor.moveToNext());
             contactAdapter.notifyDataSetChanged();
         }
-        editor.apply();
         cursor.close();
     }
 

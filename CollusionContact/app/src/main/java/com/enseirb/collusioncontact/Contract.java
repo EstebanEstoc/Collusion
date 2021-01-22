@@ -3,7 +3,7 @@ package com.enseirb.collusioncontact;
 import android.net.Uri;
 
 public final class Contract {
-    public static final String AUTHORITY = "com.enseirb.collusioncontact.provider";
+    public static final String AUTHORITY = "com.enseirb.collusioncontact";
     public static final String CONTENT_PATH = "contacts";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + CONTENT_PATH);
     static final int ALL_ITEMS = -2;

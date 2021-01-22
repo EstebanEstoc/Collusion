@@ -2,10 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.enseirb.collusioncontact">
 
-    <permission
-        android:name="com.enseirb.collusioncontact.PERMISSION.READ"
-        android:protectionLevel="normal" />
-
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 

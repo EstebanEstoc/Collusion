@@ -4,6 +4,7 @@ import android.content.ContentProvider;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
@@ -13,6 +14,14 @@ import androidx.annotation.Nullable;
 
 public class ContactContentProvider extends ContentProvider {
     Context context;
+    private static final String AUTHORITY = "com.enseirb.collusioncontact";
+    private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+
+    static {
+        uriMatcher.addURI(AUTHORITY, "contact", 1);
+
+    }
+
     @Override
     public boolean onCreate() {
         context = getContext();
@@ -30,7 +39,11 @@ public class ContactContentProvider extends ContentProvider {
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
-        return null;
+        int match = uriMatcher.match(uri);
+        if (match == 1) {
+            return "vnd.android.cursor.dir/vnd." + AUTHORITY + ".contact";
+        }
+        throw new IllegalArgumentException("Unknown URI " + uri);
     }
 
     @Nullable

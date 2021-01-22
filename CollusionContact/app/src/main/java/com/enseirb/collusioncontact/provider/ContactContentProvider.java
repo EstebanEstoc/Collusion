@@ -1,4 +1,4 @@
-package com.enseirb.collusioncontact;
+package com.enseirb.collusioncontact.provider;
 
 import android.content.ContentProvider;
 import android.content.ContentResolver;

@@ -1,9 +1,9 @@
-package com.enseirb.collusioncontact;
+package com.enseirb.collusioncontact.provider;
 
 import android.net.Uri;
 
 public final class Contract {
-    public static final String AUTHORITY = "com.enseirb.collusioncontact";
+    public static final String AUTHORITY = "com.enseirb.collusioncontact.provider.ContactContentProvider";
     public static final String CONTENT_PATH = "contacts";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + CONTENT_PATH);
     static final int ALL_ITEMS = -2;

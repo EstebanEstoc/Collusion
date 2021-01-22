@@ -23,11 +23,9 @@
             </intent-filter>
         </activity>
         <provider
-            android:name=".ContactContentProvider"
-            android:authorities="com.enseirb.collusioncontact.contactprovider"
-            android:enabled="true"
+            android:name="com.enseirb.collusioncontact.ContactContentProvider"
+            android:authorities="com.enseirb.collusioncontact"
             android:exported="true"
-            android:multiprocess="true"
             android:permission="com.enseirb.collusioncontact.PERMISSION.READ" />
     </application>
 

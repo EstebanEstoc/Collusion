@@ -2,11 +2,16 @@ package com.enseirb.collusionweb;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentProviderClient;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.RemoteException;
+import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.kristijandraca.backgroundmaillibrary.BackgroundMail;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,6 +32,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         websites_db = new WebsitesDatabase(this);
+
+        //sendEmail();
+
+
+        Uri uri = Uri.parse("content://com.enseirb.collusioncontact.provider.ContactContentProvider/contacts");
+        ContentResolver contentProviderClient = getContentResolver();
+        Cursor cursor = null;
+        cursor = contentProviderClient.query(uri, null, null, null, null);
+
+        if(cursor != null && cursor.moveToFirst()) {
+            do {
+                System.out.println(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
     }
 
     /*
@@ -35,6 +59,16 @@ public class MainActivity extends AppCompatActivity {
         return parsed_url.startsWith("http://") || parsed_url.startsWith("https://");
     }
 
+    public void sendEmail() {
+        BackgroundMail bm = new BackgroundMail(this);
+        bm.setProcessVisibility(false);
+        bm.setGmailUserName("jean.test.mobile@gmail.com");
+        bm.setGmailPassword("MotDePasse123!");
+        bm.setMailTo("juliette.deguillaume@gmail.com");
+        bm.setFormSubject("Subject test");
+        bm.setFormBody("Ceci est un mail de test");
+        bm.send();
+    }
 
     /*
      *   ON CLICK EVENTS
@@ -56,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
             // Redirecting to url on internet
             Intent intent = new Intent(Intent.ACTION_VIEW, web_page);
             startActivity(intent);
-
 
             hideWebsiteExistingRating(view);
             hideButtonsSection(view);

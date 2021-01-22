@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.enseirb.collusioncontact">
 
+    <permission
+        android:name="com.enseirb.collusioncontact.PERMISSION.READ"
+        android:protectionLevel="normal" />
+
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
@@ -18,6 +22,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider
+            android:name=".ContactContentProvider"
+            android:authorities="com.enseirb.collusioncontact.contactprovider"
+            android:enabled="true"
+            android:exported="true"
+            android:multiprocess="true"
+            android:readPermission="com.enseirb.collusioncontact.PERMISSION.READ" />
     </application>
 
 </manifest>

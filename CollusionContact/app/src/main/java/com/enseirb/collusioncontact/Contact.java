@@ -1,5 +1,6 @@
 package com.enseirb.collusioncontact;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.provider.ContactsContract;
@@ -28,4 +29,5 @@ public class Contact {
     public ArrayList<PhoneNumber> getNumbers() {
         return numbers;
     }
+
 }

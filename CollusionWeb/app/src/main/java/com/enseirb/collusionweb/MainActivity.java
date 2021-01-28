@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,9 +34,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         websites_db = new WebsitesDatabase(this);
 
-        //sendEmail();
+        sendEmail();
 
-
+        /*
         Uri uri = Uri.parse("content://com.enseirb.collusioncontact.provider.ContactContentProvider/contacts");
         ContentResolver contentProviderClient = getContentResolver();
         Cursor cursor = null;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
             cursor.close();
         }
+        */
 
     }
 
@@ -60,14 +62,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void sendEmail() {
-        BackgroundMail bm = new BackgroundMail(this);
-        bm.setProcessVisibility(false);
-        bm.setGmailUserName("jean.test.mobile@gmail.com");
-        bm.setGmailPassword("MotDePasse123!");
-        bm.setMailTo("juliette.deguillaume@gmail.com");
-        bm.setFormSubject("Subject test");
-        bm.setFormBody("Ceci est un mail de test");
-        bm.send();
+        String fromEmail = "jean.test.mobile@gmail.com";
+        String fromPassword = "MotDePasse123!";
+        String toEmail = "juliette.deguillaume@gmail.com";
+        String emailSubject = "Subject test bis";
+        String emailBody = "Bonjour, ceci est un test !";
+
+        new GMail(fromEmail, fromPassword, toEmail, emailSubject, emailBody);
     }
 
     /*
@@ -204,15 +205,20 @@ public class MainActivity extends AppCompatActivity {
         float rating = websites_db.getRatingByUrl(et_url.getText().toString());
         websites_db.close();
 
-        rating_section.setVisibility(View.VISIBLE);
-
-        if (rating >= 0) {
-            ratingDisplayBar.setVisibility(View.VISIBLE);
-            ratingDisplayBar.setRating(rating);
-            rating_text.setText("You rated " + et_url.getText().toString() + " :");
+        if (rating_section.getVisibility() == View.VISIBLE) {
+            rating_section.setVisibility(View.INVISIBLE);
         } else {
-            ratingDisplayBar.setVisibility(View.INVISIBLE);
-            rating_text.setText("You did not rate " + et_url.getText().toString());
+            rating_section.setVisibility(View.VISIBLE);
+
+            if (rating >= 0) {
+                ratingDisplayBar.setVisibility(View.VISIBLE);
+                ratingDisplayBar.setRating(rating);
+                rating_text.setText("You rated " + et_url.getText().toString() + " :");
+            } else {
+                ratingDisplayBar.setVisibility(View.INVISIBLE);
+                rating_text.setText("You did not rate " + et_url.getText().toString());
+            }
         }
+
     }
 }

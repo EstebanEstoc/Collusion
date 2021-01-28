@@ -18,6 +18,12 @@ public class Contact {
         this.numbers = phones;
     }
 
+    public Contact(String name, ArrayList<PhoneNumber> phones) {
+        this.name = name;
+        this.thumbnail = null;
+        this.numbers = phones;
+    }
+
     public String getName() {
         return name;
     }

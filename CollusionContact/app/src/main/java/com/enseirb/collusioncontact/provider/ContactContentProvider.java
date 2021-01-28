@@ -15,6 +15,11 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.enseirb.collusioncontact.Contact;
+import com.enseirb.collusioncontact.PhoneNumber;
+
+import java.util.ArrayList;
+
 public class ContactContentProvider extends ContentProvider {
 
     @Override
@@ -25,8 +30,15 @@ public class ContactContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        return null;
+        ContentResolver contentResolver = getContext().getContentResolver();
+        if (selection != null) {
+            return contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + selection, null, null);
+        }else{
+            return contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null);
+        }
     }
+
 
     @Nullable
     @Override

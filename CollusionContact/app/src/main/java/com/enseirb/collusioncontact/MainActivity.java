@@ -1,3 +1,4 @@
+
 package com.enseirb.collusioncontact;
 
 import androidx.annotation.NonNull;
@@ -94,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
             do {
                 String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
                 ArrayList<PhoneNumber> numbers = getPhones(contactId);
-
                 contacts.add(new Contact(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)), uriToBitmap(this, cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.PHOTO_URI))), numbers));
             } while (cursor.moveToNext());
             contactAdapter.notifyDataSetChanged();

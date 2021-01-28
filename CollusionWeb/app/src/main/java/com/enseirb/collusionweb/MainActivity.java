@@ -12,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,7 +24,7 @@ import android.widget.Toast;
 import com.kristijandraca.backgroundmaillibrary.BackgroundMail;
 
 public class MainActivity extends AppCompatActivity {
-
+    private static final String TAG = "ContactProvider";
     private static WebsitesDatabase websites_db;
     private static boolean websiteExistsInDB = false;
 
@@ -32,23 +33,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         websites_db = new WebsitesDatabase(this);
-
         //sendEmail();
-
-
-        Uri uri = Uri.parse("content://com.enseirb.collusioncontact.provider.ContactContentProvider/contacts");
-        ContentResolver contentProviderClient = getContentResolver();
-        Cursor cursor = null;
-        cursor = contentProviderClient.query(uri, null, null, null, null);
-
-        if(cursor != null && cursor.moveToFirst()) {
-            do {
-                System.out.println(cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)));
-            } while (cursor.moveToNext());
-
-            cursor.close();
-        }
-
+        
     }
 
     /*

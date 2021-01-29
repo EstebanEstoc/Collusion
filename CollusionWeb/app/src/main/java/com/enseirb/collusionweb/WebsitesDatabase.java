@@ -46,4 +46,9 @@ public class WebsitesDatabase {
     public void updateRatingByUrl(String url, float rating) {
         db.execSQL("UPDATE websites SET rating=? WHERE url LIKE ?;", new String[] {String.valueOf(rating), url});
     }
+
+    public Cursor getAllOrderedByRating() {
+        Cursor cursor = db.rawQuery("SELECT * FROM websites ORDER BY rating DESC, url ASC", null) ;
+        return cursor;
+    }
 }

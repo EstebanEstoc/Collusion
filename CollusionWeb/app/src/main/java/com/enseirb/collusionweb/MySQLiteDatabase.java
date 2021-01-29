@@ -8,7 +8,7 @@ import androidx.annotation.Nullable;
 
 public class MySQLiteDatabase extends SQLiteOpenHelper {
     private final static String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS websites(" +
-                                                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                                                    "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                                                     "url VARCHAR(255) NOT NULL," +
                                                     "rating FLOAT NOT NULL );";
 

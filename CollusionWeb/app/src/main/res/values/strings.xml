@@ -4,5 +4,9 @@
     <string name="rating_btn">Check rating</string>
     <string name="url_btn">Go to this url</string>
     <string name="save_btn">Save website</string>
-    <string name="update_btn">Update rating of website</string>
+    <string name="dont_save_btn">Do not save the website</string>
+    <string name="update_btn">Update website\'s rating</string>
+    <string name="dont_update_btn">Do not update the rating</string>
+    <string name="display_list_btn">See my rated websites</string>
+    <string name="no_website_saved">You did not rate any website.</string>
 </resources>

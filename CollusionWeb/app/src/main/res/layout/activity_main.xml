@@ -6,10 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_margin="15dp"
+        android:onClick="goToWebsitesList"
+        android:text="@string/display_list_btn"
+        android:backgroundTint="@color/light_grey"
+        android:textColor="@color/design_default_color_on_secondary"
+        tools:ignore="MissingConstraints" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_marginTop="100dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,7 +73,7 @@
             android:layout_margin="10dp"
             android:background="@drawable/rounded_edge"
             android:orientation="vertical"
-            android:visibility="invisible">
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/display_rating_text"
@@ -76,6 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:isIndicator="true"
                 android:numStars="5" />
         </LinearLayout>
 
@@ -83,26 +96,39 @@
             android:id="@+id/rating_section"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
+            android:layout_gravity="bottom|center"
+            android:layout_margin="10dp"
+            android:background="@drawable/rounded_edge"
             android:orientation="vertical"
-            android:visibility="invisible">
+            android:visibility="gone">
 
             <RatingBar
                 android:id="@+id/ratingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:layout_margin="5dp"
                 android:numStars="5" />
 
             <Button
                 android:id="@+id/save_update_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="6dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="6dp"
                 android:onClick="updateOrSaveWebsite"
                 android:text="@string/save_btn" />
+
+            <Button
+                android:id="@+id/dont_save_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:onClick="doNotSaveWebsite"
+                android:text="@string/dont_save_btn" />
         </LinearLayout>
     </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
